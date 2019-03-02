@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.28010.2046
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GettyWAPI", "GettyWAPI\GettyWAPI.csproj", "{8BEC7981-E6F1-428C-A7C9-56BB7A2AD2CF}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GettyWAPI.Tests", "GettyWAPI.Tests\GettyWAPI.Tests.csproj", "{E3730AA3-52FD-4392-AE56-448DDB54957F}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{8BEC7981-E6F1-428C-A7C9-56BB7A2AD2CF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8BEC7981-E6F1-428C-A7C9-56BB7A2AD2CF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8BEC7981-E6F1-428C-A7C9-56BB7A2AD2CF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8BEC7981-E6F1-428C-A7C9-56BB7A2AD2CF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E3730AA3-52FD-4392-AE56-448DDB54957F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E3730AA3-52FD-4392-AE56-448DDB54957F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E3730AA3-52FD-4392-AE56-448DDB54957F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E3730AA3-52FD-4392-AE56-448DDB54957F}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {4FE45021-8D6B-462A-B5A9-91572B7AC771}
+	EndGlobalSection
+EndGlobal

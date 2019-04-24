@@ -3,7 +3,7 @@ using System.Data.Entity.Infrastructure;
 using System.Linq;
 using System.Linq.Expressions;
 
-namespace GettyWAPI.Tests.Helpers
+namespace GettyWAPI.Tests.Helpers.Moq
 {
     // from url:
     // https://docs.microsoft.com/en-us/ef/ef6/fundamentals/testing/mocking

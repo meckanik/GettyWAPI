@@ -4,7 +4,7 @@ using System.Linq.Expressions;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace GettyWAPI.Tests.Helpers
+namespace GettyWAPI.Tests.Helpers.Moq
 {
     // from url:
     // https://docs.microsoft.com/en-us/ef/ef6/fundamentals/testing/mocking

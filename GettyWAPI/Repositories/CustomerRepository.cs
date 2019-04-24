@@ -1,14 +1,19 @@
 ﻿using System.Collections.Generic;
 using System.Data.Entity;
-using System.Linq;
 using System.Threading.Tasks;
 using GettyWAPI.Models;
+using GettyWAPI.Models.ModelConverters;
 
-namespace GettyWAPI.Repository
+namespace GettyWAPI.Repositories
 {
     public class CustomerRepository
     {
-        private NorthwindEntities _context = new NorthwindEntities();
+        private NorthwindEntities _context;
+
+        public CustomerRepository(NorthwindEntities context)
+        {
+            _context = context;
+        }
 
         public async Task<CustomerModel> GetCustomerAsync(string id)
         {
@@ -18,40 +23,16 @@ namespace GettyWAPI.Repository
             }
 
             var customer = await _context.Customers.SingleAsync(c => c.CustomerID == id);
+            var model = CustomerConverter.ConvertToCustomerModel(customer);
 
-            return new CustomerModel
-            {
-                CustomerId = customer.CustomerID,
-                Address = customer.Address,
-                City = customer.City,
-                CompanyName = customer.CompanyName,
-                ContactName = customer.ContactName,
-                ContactTitle = customer.ContactTitle,
-                Country = customer.Country,
-                Fax = customer.Fax,
-                Phone = customer.Phone,
-                PostalCode = customer.PostalCode,
-                Region = customer.Region
-            };
+            return model;
         }
 
         public async Task<IEnumerable<CustomerModel>> GetCustomersAsync()
         {
-            return await Task.Run(() => from c in _context.Customers
-                select new CustomerModel
-                {
-                    CustomerId = c.CustomerID,
-                    Address = c.Address,
-                    City = c.City,
-                    CompanyName = c.CompanyName,
-                    ContactName = c.ContactName,
-                    ContactTitle = c.ContactTitle,
-                    Country = c.Country,
-                    Fax = c.Fax,
-                    Phone = c.Phone,
-                    PostalCode = c.PostalCode,
-                    Region = c.Region
-                });
+            return await Task.Run(() =>
+                CustomerConverter.ConvertToCustomerModelCollection(_context.Customers)
+            );
         }
 
         public async Task<CustomerModel> FindCustomer(string id)
@@ -74,7 +55,7 @@ namespace GettyWAPI.Repository
             };
         }
 
-        public void PutCustomer(CustomerModel model)
+        public void UpdateCustomer(CustomerModel model)
         {
             // convert the model
             var result = new Customer
@@ -97,10 +78,35 @@ namespace GettyWAPI.Repository
             _context.SaveChanges();
         }
 
+        public async Task<int> InsertCustomerAsync(CustomerModel customer)
+        {
+            var id = Helpers.IdGenerators.GenerateCustomerId(customer);
+
+            var entity = new Customer()
+            {
+                CustomerID = id,
+                Address = customer.Address,
+                City = customer.City,
+                CompanyName = customer.CompanyName,
+                ContactName = customer.ContactName,
+                ContactTitle = customer.ContactTitle,
+                Country = customer.Country,
+                Fax = customer.Fax,
+                Phone = customer.Phone,
+                PostalCode = customer.PostalCode,
+                Region = customer.Region
+            };
+
+            _context.Customers.Add(entity);
+
+            return await _context.SaveChangesAsync();
+        }
+
         public void DeleteCustomer(string id)
         {
             var model = new Customer { CustomerID = id} ;
             _context.Customers.Remove(model);
+            _context.SaveChanges();
         }
 
 

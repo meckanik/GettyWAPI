@@ -1,14 +1,14 @@
 ﻿using System.Threading.Tasks;
 using System.Web.Http;
 using GettyWAPI.Models;
-using GettyWAPI.Repository;
+using GettyWAPI.Repositories;
 using Newtonsoft.Json;
 
 namespace GettyWAPI.Controllers.api
 {
     public class CustomerJsonController : ApiController
     {
-        private CustomerRepository _repository; // = new CustomerRepository();
+        private CustomerRepository _repository;
 
         public CustomerJsonController(CustomerRepository repository)
         {
@@ -24,6 +24,7 @@ namespace GettyWAPI.Controllers.api
         }
 
         // GET: api/Customers/5
+        [HttpGet]
         public async Task<IHttpActionResult> GetCustomer(string id)
         {
             var model = await _repository.GetCustomerAsync(id);
@@ -38,27 +39,30 @@ namespace GettyWAPI.Controllers.api
         }
 
         // PUT: api/Customers/5
-        public IHttpActionResult PutCustomer(string id, Customer customer)
+        [HttpPut]
+        public async Task<IHttpActionResult> PutCustomer()
         {
-            return NotFound();
-        }
-
-        // POST: api/Customers
-        public async Task<IHttpActionResult> PostCustomer()
-        {
-            //var cust = await _repository.GetCustomerAsync("ANATR");
-            //var origjson = JsonConvert.SerializeObject(cust);
-            //var newmodel = JsonConvert.DeserializeObject<CustomerModel>(origjson);
-
-
             var customer = await Request.Content.ReadAsStringAsync();
             var model = JsonConvert.DeserializeObject<CustomerModel>(customer);
 
-            _repository.PutCustomer(model);
+            await _repository.InsertCustomerAsync(model);
+
+            return Ok();
+        }
+
+        // POST: api/Customers
+        [HttpPost]
+        public async Task<IHttpActionResult> PostCustomer()
+        {
+            var customer = await Request.Content.ReadAsStringAsync();
+            var model = JsonConvert.DeserializeObject<CustomerModel>(customer);
+
+            _repository.UpdateCustomer(model);
             return Ok();
         }
 
         // DELETE: api/Customers/5
+        [HttpDelete]
         public IHttpActionResult DeleteCustomer(string id)
         {
             _repository.DeleteCustomer(id);

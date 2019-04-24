@@ -6,6 +6,7 @@ using System.Web.Http.Results;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using GettyWAPI.Controllers.api;
 using GettyWAPI.Tests.Helpers;
+using GettyWAPI.Tests.Helpers.Moq;
 using Moq;
 
 namespace GettyWAPI.Tests.Controllers.api
@@ -44,27 +45,9 @@ namespace GettyWAPI.Tests.Controllers.api
                     }
                 }
             };
+
             var queryable = customers.AsQueryable();
-
-            var mockSet = new Mock<DbSet<Customer>>();
-            mockSet.As<IQueryable<Customer>>()
-                .Setup(m => m.Expression)
-                .Returns(queryable.Expression);
-            mockSet.As<IQueryable<Customer>>()
-                .Setup(m => m.ElementType)
-                .Returns(queryable.ElementType);
-            mockSet.As<IQueryable<Customer>>()
-                .Setup(m => m.GetEnumerator())
-                .Returns(queryable.GetEnumerator);
-
-            mockSet.As<IDbAsyncEnumerable<Customer>>()
-                .Setup(m => m.GetAsyncEnumerator())
-                .Returns(new TestDbAsyncEnumerator<Customer>(queryable.GetEnumerator()));
-
-            mockSet.As<IQueryable<Customer>>()
-                .Setup(m => m.Provider)
-                .Returns(new TestDbAsyncQueryProvider<Customer>(queryable.Provider));
-
+            var mockSet = MockAsyncData<Customer>.MockAsyncQueryResult(queryable);
 
             mockSet.Setup(m => m.Add(It.IsAny<Customer>())).Callback((Customer customer) => customers.Add(customer));
             mockSet.Setup(m => m.Remove(It.IsAny<Customer>())).Callback((Customer customer) => customers.Remove(customer));
